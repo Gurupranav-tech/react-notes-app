@@ -1,4 +1,5 @@
 @import-normalize;
+@import url('https://fonts.googleapis.com/css2?family=Roboto:wght@100;300;400;500;700;900&display=swap');
 
 *,
 *::after,
@@ -6,6 +7,24 @@
   margin: 0;
   padding: 0;
   box-sizing: border-box;
+}
+
+:root {
+  --primary-color: #fbc103;
+  --text-color: #3a3a3a;
+}
+
+body {
+  font-family: 'Roboto', sans-serif;
+}
+
+a,
+button {
+  outline: none;
+  border: none;
+  background-color: transparent;
+  color: currentColor;
+  text-decoration: none;
 }
 
 /* Utilities */

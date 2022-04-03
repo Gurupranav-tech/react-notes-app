@@ -1,0 +1,9 @@
+.btn {
+  padding: 1rem 5rem;
+  cursor: pointer;
+  border-radius: 10px;
+}
+
+.btnPrimary {
+  background-color: var(--primary-color);
+}
