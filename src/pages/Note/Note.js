@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import Quill from 'quill';
 import 'quill/dist/quill.snow.css';
 import { useCallback, useEffect, useState } from 'react';
