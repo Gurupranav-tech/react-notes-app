@@ -1,8 +1,10 @@
-import { BrowserRouter, Routes, Route, useLocation } from 'react-router-dom';
+import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import Notes from './pages/Notes/Notes';
 import { motion } from 'framer-motion';
 import Note from './pages/Note/Note';
 import NotesProvider from './contexts/NotesProvider';
+import { ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.min.css';
 
 function App() {
   return (
@@ -30,6 +32,7 @@ function App() {
           </motion.div>
         </div>
       </NotesProvider>
+      <ToastContainer />
     </BrowserRouter>
   );
 }

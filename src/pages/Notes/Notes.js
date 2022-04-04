@@ -1,4 +1,4 @@
-import { motion } from 'framer-motion';
+import { AnimatePresence, motion } from 'framer-motion';
 import Button from '../../components/Button/Button';
 import Navbar from '../../components/Navbar/Navbar';
 import { ReactComponent as Illustration } from '../../images/illustration.svg';
@@ -56,11 +56,13 @@ function DefaultUI() {
 
   const notesAvailableUI = (
     <div className={styles.cards}>
-      {notes.map((note) => (
-        <Card key={note.id} id={note.id}>
-          {note.text}
-        </Card>
-      ))}
+      <AnimatePresence>
+        {notes.map((note) => (
+          <Card key={note.id} id={note.id} redirectUrl={`/notes/${note.id}`}>
+            {note.text.substr(0, 10) + '...'}
+          </Card>
+        ))}
+      </AnimatePresence>
     </div>
   );
 

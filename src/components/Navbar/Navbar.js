@@ -1,22 +1,33 @@
-import {
-  FaBars,
-  FaPencilAlt,
-  FaSearch,
-  FaArrowLeft,
-  FaSave,
-} from 'react-icons/fa';
+import { FaBars, FaPencilAlt, FaArrowLeft, FaSave } from 'react-icons/fa';
 import styles from './Navbar.module.css';
-import { motion } from 'framer-motion';
+import { motion, AnimatePresence } from 'framer-motion';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { useNotes } from '../../contexts/NotesProvider';
+import { useState } from 'react';
+import Help from '../Help/Help';
+import { toast } from 'react-toastify';
 
 function Navbar() {
   const navigate = useNavigate();
   const { pathname } = useLocation();
-  const { save } = useNotes();
+  const { save, notes, sourceSaved } = useNotes();
+  const [help, setHelp] = useState(false);
 
-  const moveFront = () => navigate('/notes/0');
-  const moveBack = () => navigate('/notes');
+  const moveFront = () =>
+    navigate(
+      `/notes/${
+        notes[notes.length - 1] !== undefined
+          ? notes[notes.length - 1].id + 1
+          : 0
+      }`
+    );
+  const moveBack = () => {
+    if (!sourceSaved) {
+      toast.warn('Note not saved');
+      return;
+    }
+    navigate('/notes');
+  };
 
   if (pathname === '/notes')
     return (
@@ -25,6 +36,7 @@ function Navbar() {
           whileHover={{ scale: 1.1 }}
           whileTap={{ scale: 0.9 }}
           className={styles.navbarBrand}
+          onClick={() => setHelp(true)}
         >
           <FaBars />
         </motion.div>
@@ -36,10 +48,10 @@ function Navbar() {
           >
             <FaPencilAlt />
           </motion.div>
-          <motion.div whileHover={{ scale: 1.1 }} whileTap={{ scale: 0.9 }}>
-            <FaSearch />
-          </motion.div>
         </div>
+        <AnimatePresence>
+          {help && <Help onExit={() => setHelp(false)} />}
+        </AnimatePresence>
       </header>
     );
   else

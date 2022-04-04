@@ -4,6 +4,7 @@ import { useCallback, useEffect, useState } from 'react';
 import { useNotes } from '../../contexts/NotesProvider';
 import styles from './Note.module.css';
 import { useParams } from 'react-router-dom';
+import { toast } from 'react-toastify';
 
 const TOOLBAR_OPTIONS = [
   [{ header: [1, 2, 3, 4, 5, 6, false] }],
@@ -20,7 +21,8 @@ const TOOLBAR_OPTIONS = [
 function Note() {
   const [quill, setQuill] = useState(null);
   const [note, setNote] = useState('');
-  const { registerCallback } = useNotes();
+  const { id } = useParams();
+  const { registerCallback, getNote, setSourceSaved } = useNotes();
   const editorRef = useCallback((wrapper) => {
     if (wrapper === null) return;
     wrapper.textContent = '';
@@ -30,9 +32,10 @@ function Note() {
       theme: 'snow',
       modules: { toolbar: TOOLBAR_OPTIONS },
     });
+    const note = getNote(parseInt(id));
+    q.setText(note);
     setQuill(q);
   }, []);
-  const { id } = useParams();
 
   useEffect(() => {
     if (quill === null) return;
@@ -40,6 +43,8 @@ function Note() {
     const handler = () => {
       const source = quill.getText();
       setNote(source);
+      if (source === '') return;
+      setSourceSaved(false);
     };
 
     quill.on('text-change', handler);
@@ -47,12 +52,16 @@ function Note() {
     return () => quill.off('text-change', handler);
   }, [quill]);
 
-  registerCallback(({ createOrUpdateNote }) => {
-    createOrUpdateNote({
-      id: parseInt(id),
-      text: note,
+  useEffect(() => {
+    registerCallback(({ createOrUpdateNote }) => {
+      createOrUpdateNote({
+        id: parseInt(id),
+        text: note,
+      });
+      setSourceSaved(true);
+      toast.info('Saved the note');
     });
-  });
+  }, [id, note, registerCallback]);
 
   return <div className={styles.editor} ref={editorRef}></div>;
 }

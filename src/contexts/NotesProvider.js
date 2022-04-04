@@ -1,4 +1,4 @@
-import { createContext, useContext, useRef } from 'react';
+import { createContext, useContext, useRef, useState } from 'react';
 import useLocalStorage from '../hooks/useLocalStorage';
 
 const context = createContext(null);
@@ -9,6 +9,7 @@ export function useNotes() {
 
 export default function NotesProvider({ children }) {
   const [notes, setNotes] = useLocalStorage('notes', []);
+  const [sourceSaved, setSourceSaved] = useState(false);
   const callback = useRef(null);
 
   const createOrUpdateNote = ({ id, text }) => {
@@ -17,8 +18,9 @@ export default function NotesProvider({ children }) {
       setNotes((prevNotes) => [...prevNotes, { id, text }]);
     } else {
       setNotes((prevNote) => {
-        prevNote[note].text = text;
-        return prevNote;
+        const notes = prevNote;
+        notes[note].text = text;
+        return notes;
       });
     }
   };
@@ -32,10 +34,24 @@ export default function NotesProvider({ children }) {
     callback.current = cb;
   };
 
+  const getNote = (id) => {
+    const note = notes.find((note) => note.id === id);
+    if (note == null) return '';
+    return note.text;
+  };
+
+  const deleteNote = (id) => {
+    setNotes((prevNotes) => prevNotes.filter((prevNote) => prevNote.id !== id));
+  };
+
   const value = {
     notes,
+    sourceSaved,
     save,
     registerCallback,
+    getNote,
+    deleteNote,
+    setSourceSaved,
   };
   return <context.Provider value={value}>{children}</context.Provider>;
 }

@@ -5,4 +5,32 @@
   justify-content: space-between;
   border: 1px solid rgba(0, 0, 0, 0.5);
   padding: 1rem;
+  box-shadow: -5px 5px 5px rgba(0, 0, 0, 0.15);
+  border-radius: 10px;
+}
+
+.card svg {
+  transform: scale(1.5);
+}
+
+.cardText,
+.cardId {
+  pointer-events: none;
+  user-select: none;
+}
+
+.cardId {
+  font-weight: bold;
+  border-right: 2px solid black;
+  padding-right: 2px;
+}
+
+.icons {
+  display: flex;
+  gap: 2rem;
+}
+
+.deleteButton {
+  color: red;
+  transform: scale(1.1);
 }

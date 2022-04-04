@@ -1,22 +1,31 @@
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 
-const PREFIX_KEY = 'notesapp:';
-
-export default function useLocalStorage(name, initialValue) {
-  const key = PREFIX_KEY + name;
-  const [value, setValue] = useState(() => {
-    const data = localStorage.getItem(key);
-    if (data !== null) {
-      return JSON.parse(data);
+export default function useLocalStorage(key, initialValue) {
+  const [storedValue, setStoredValue] = useState(() => {
+    if (typeof window === 'undefined') {
+      return initialValue;
     }
-    if (typeof initialValue === 'function') return initialValue();
-    return initialValue;
+
+    try {
+      const item = window.localStorage.getItem(key);
+      return item ? JSON.parse(item) : initialValue;
+    } catch (error) {
+      console.log(error);
+      return initialValue;
+    }
   });
+  const setValue = (value) => {
+    try {
+      const valueToStore =
+        value instanceof Function ? value(storedValue) : value;
+      setStoredValue(valueToStore);
+      if (typeof window !== 'undefined') {
+        window.localStorage.setItem(key, JSON.stringify(valueToStore));
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  };
 
-  useEffect(() => {
-    const data = JSON.stringify(value);
-    localStorage.setItem(key, data);
-  }, [value, key]);
-
-  return [value, setValue];
+  return [storedValue, setValue];
 }
