@@ -1,14 +1,15 @@
-import { BrowserRouter, Routes, Route } from 'react-router-dom';
+import { HashRouter, Routes, Route } from 'react-router-dom';
 import Notes from './pages/Notes/Notes';
 import { motion } from 'framer-motion';
 import Note from './pages/Note/Note';
 import NotesProvider from './contexts/NotesProvider';
 import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.min.css';
+import Home from './pages/Home/Home';
 
 function App() {
   return (
-    <BrowserRouter>
+    <HashRouter>
       <NotesProvider>
         <div className='container'>
           <motion.div
@@ -25,6 +26,7 @@ function App() {
             }}
           >
             <Routes>
+              <Route path='/' element={<Home />} />
               <Route path='/notes' element={<Notes />}>
                 <Route path='/notes/:id' element={<Note />} />
               </Route>
@@ -33,7 +35,7 @@ function App() {
         </div>
       </NotesProvider>
       <ToastContainer />
-    </BrowserRouter>
+    </HashRouter>
   );
 }
 

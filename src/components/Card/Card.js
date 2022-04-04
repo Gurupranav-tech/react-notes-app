@@ -4,6 +4,7 @@ import { AiFillDelete } from 'react-icons/ai';
 import { motion } from 'framer-motion';
 import { Link } from 'react-router-dom';
 import { useNotes } from '../../contexts/NotesProvider';
+import { toast } from 'react-toastify';
 
 function Card({ children, id, redirectUrl }) {
   const { deleteNote } = useNotes();
@@ -27,7 +28,10 @@ function Card({ children, id, redirectUrl }) {
           whileHover={{ scale: 1.1 }}
           whileTap={{ scale: 0.9 }}
           className={styles.deleteButton}
-          onClick={() => deleteNote(id)}
+          onClick={() => {
+            deleteNote(id);
+            toast.info('Note deleted');
+          }}
         >
           <AiFillDelete />
         </motion.button>
