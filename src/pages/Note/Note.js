@@ -31,7 +31,7 @@ function Note() {
     wrapper.append(editor);
     const q = new Quill(editor, {
       theme: 'snow',
-      modules: { toolbar: TOOLBAR_OPTIONS },
+      // modules: { toolbar: TOOLBAR_OPTIONS },
     });
     const note = getNote(parseInt(id));
     q.setText(note);

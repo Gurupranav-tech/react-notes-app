@@ -37,6 +37,7 @@ function Navbar() {
           whileTap={{ scale: 0.9 }}
           className={styles.navbarBrand}
           onClick={() => setHelp(true)}
+          aria-label='sidebar'
         >
           <FaBars />
         </motion.div>
@@ -62,6 +63,7 @@ function Navbar() {
           whileTap={{ scale: 0.9 }}
           className={styles.navbarBrand}
           onClick={moveBack}
+          aria-label='close sidebar'
         >
           <FaArrowLeft />
         </motion.div>
