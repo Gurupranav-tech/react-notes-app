@@ -7,6 +7,7 @@ import styles from './Note.module.css';
 import { useParams } from 'react-router-dom';
 import { toast } from 'react-toastify';
 
+// eslint-disable-next-line no-unused-vars
 const TOOLBAR_OPTIONS = [
   [{ header: [1, 2, 3, 4, 5, 6, false] }],
   [{ font: [] }],
